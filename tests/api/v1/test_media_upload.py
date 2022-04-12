@@ -1,9 +1,12 @@
 # tests/api/test_course_publish.py
+import os
+
 import pytest
 import unittest
 
 from django import forms
 from oppia.test import OppiaTestCase
+from oppiamobile.settings import TEST_RESOURCES
 
 
 class MediaPublishResourceTest(OppiaTestCase):
@@ -17,10 +20,8 @@ class MediaPublishResourceTest(OppiaTestCase):
     def setUp(self):
         super(MediaPublishResourceTest, self).setUp()
         self.url = '/api/media/'
-        self.course_file_path = \
-            './oppia/fixtures/reference_files/ncd1_test_course.zip'
-        self.video_file_path = \
-            './oppia/fixtures/reference_files/sample_video.m4v'
+        self.course_file_path = os.path.join(TEST_RESOURCES, 'ncd1_test_course.zip')
+        self.video_file_path = os.path.join(TEST_RESOURCES, 'sample_video.m4v')
 
     # test only POST is available
     def test_no_get(self):

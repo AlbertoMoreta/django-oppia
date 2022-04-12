@@ -1,9 +1,14 @@
+import os
+import shutil
+
 import pytest
 
 from django.core import mail
 from django.urls import reverse
 
 from oppia.test import OppiaTestCase
+from oppiamobile import settings
+from oppiamobile.settings import TEST_RESOURCES
 
 from settings import constants
 from settings.models import SettingProperties
@@ -28,6 +33,17 @@ class RegenerateCertficatesTest(OppiaTestCase):
     STR_URL = 'profile:user_regenerate_certificates'
     STR_URL_REDIRECT = 'profile:user_regenerate_certificates_success'
     STR_TEMPLATE = 'profile/certificates/regenerate.html'
+    TEST_IMG_NAMES = ['certificate_test2_aIeE1m6.png', 'certificate_test2_Aq5hcOr.png',
+                      'certificate_portrait_valid_f1uzKEr.png', 'certificate_landscape_valid_XI8nTfU.png']
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        for test_img_name in cls.TEST_IMG_NAMES:
+            src = os.path.join(TEST_RESOURCES, 'certificate', 'templates', test_img_name)
+            dst = os.path.join(settings.MEDIA_ROOT, 'certificate', 'templates', test_img_name)
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            shutil.copyfile(src, dst)
 
     ####
     # check access via GET various users

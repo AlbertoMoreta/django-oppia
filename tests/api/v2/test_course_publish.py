@@ -1,4 +1,6 @@
 # tests/api/test_course_publish.py
+import os
+
 import api
 import pytest
 
@@ -7,6 +9,7 @@ from django.test.client import RequestFactory
 from oppia.test import OppiaTransactionTestCase
 
 from oppia.models import Course, CoursePublishingLog
+from oppiamobile.settings import TEST_RESOURCES
 from settings.models import SettingProperties
 
 
@@ -18,20 +21,16 @@ class CoursePublishResourceTest(OppiaTransactionTestCase):
                 'tests/test_permissions.json',
                 'tests/test_course_permissions.json']
 
-    file_root = './oppia/fixtures/reference_files/'
-    no_module_xml = file_root + 'test_course_no_module_xml.zip'
-    corrupt_course_zip = file_root + 'corrupt_course.zip'
+    no_module_xml = os.path.join(TEST_RESOURCES, 'test_course_no_module_xml.zip')
+    corrupt_course_zip = os.path.join(TEST_RESOURCES, 'corrupt_course.zip')
 
     def setUp(self):
         super(CoursePublishResourceTest, self).setUp()
         self.factory = RequestFactory()
         self.url = '/api/publish/'
-        self.course_file_path = \
-            './oppia/fixtures/reference_files/ncd1_test_course.zip'
-        self.video_file_path = \
-            './oppia/fixtures/reference_files/sample_video.m4v'
-        self.course_draft_file_path = \
-            './oppia/fixtures/reference_files/draft-20150611100319.zip'
+        self.course_file_path = os.path.join(TEST_RESOURCES, 'ncd1_test_course.zip')
+        self.video_file_path = os.path.join(TEST_RESOURCES, 'sample_video.m4v')
+        self.course_draft_file_path = os.path.join(TEST_RESOURCES, 'draft-20150611100319.zip')
 
     # test only POST is available
     def test_no_get(self):

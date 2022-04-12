@@ -1,8 +1,13 @@
+import os
+import shutil
+
 import pytest
 
 from django.urls import reverse
 from oppia.models import Tracker
 from oppia.test import OppiaTestCase
+from oppiamobile import settings
+from oppiamobile.settings import TEST_RESOURCES
 
 from tests.utils import update_course_visibility
 
@@ -15,6 +20,7 @@ class DownloadViewTest(OppiaTestCase):
                 'tests/test_permissions.json',
                 'tests/test_course_permissions.json']
     STR_EXPECTED_CONTENT_TYPE = 'application/zip'
+    TEST_COURSES = ['anc_test_course.zip']
 
     def setUp(self):
         super(DownloadViewTest, self).setUp()
@@ -22,6 +28,14 @@ class DownloadViewTest(OppiaTestCase):
                                                  args=[1])
         self.course_download_url_invalid = reverse('oppia:course_download',
                                                    args=[123])
+        self.copy_test_courses()
+
+    # Copy test courses to upload directory
+    def copy_test_courses(self):
+        for test_course in self.TEST_COURSES:
+            src = os.path.join(TEST_RESOURCES, test_course)
+            dst = os.path.join(settings.COURSE_UPLOAD_DIR, test_course)
+            shutil.copyfile(src, dst)
 
     @pytest.mark.xfail(reason="works on local but not on github workflows")
     def test_live_course_admin(self):

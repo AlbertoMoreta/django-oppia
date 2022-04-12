@@ -1,10 +1,13 @@
 # tests/api/test_course_publish.py
+import os
+
 import api
 import pytest
 
 from oppia.test import OppiaTransactionTestCase
 
 from oppia.models import Course, CoursePublishingLog
+from oppiamobile.settings import TEST_RESOURCES
 from settings.models import SettingProperties
 
 
@@ -18,10 +21,8 @@ class CoursePublishResourceTest(OppiaTransactionTestCase):
     def setUp(self):
         super(CoursePublishResourceTest, self).setUp()
         self.url = '/api/publish/'
-        self.course_file_path = \
-            './oppia/fixtures/reference_files/ncd1_test_course.zip'
-        self.video_file_path = \
-            './oppia/fixtures/reference_files/sample_video.m4v'
+        self.course_file_path = os.path.join(TEST_RESOURCES, 'ncd1_test_course.zip')
+        self.video_file_path = os.path.join(TEST_RESOURCES, 'sample_video.m4v')
 
     # test only POST is available
     def test_no_get(self):

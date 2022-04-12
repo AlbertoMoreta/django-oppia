@@ -1,3 +1,6 @@
+import os
+import shutil
+
 import pytest
 
 from django.core import mail
@@ -8,6 +11,8 @@ from io import StringIO
 
 from oppia.test import OppiaTestCase
 from oppia.models import Award, CertificateTemplate
+from oppiamobile import settings
+from oppiamobile.settings import TEST_RESOURCES
 
 from profile.models import CustomField, UserProfileCustomField
 
@@ -31,6 +36,18 @@ class GenerateCertificatesTest(OppiaTestCase):
                 'tests/test_feedback.json',
                 'tests/test_customfields.json',
                 'tests/awards/test_feedback_display_name.json']
+
+    TEST_IMG_NAMES = ['certificate_test2_aIeE1m6.png', 'certificate_test2_Aq5hcOr.png',
+                      'certificate_portrait_valid_f1uzKEr.png', 'certificate_landscape_valid_XI8nTfU.png']
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        for test_img_name in cls.TEST_IMG_NAMES:
+            src = os.path.join(TEST_RESOURCES, 'certificate', 'templates', test_img_name)
+            dst = os.path.join(settings.MEDIA_ROOT, 'certificate', 'templates', test_img_name)
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            shutil.copyfile(src, dst)
 
     @pytest.mark.xfail(reason="works on local, but not on Github workflow")
     def test_create_certificate_new(self):

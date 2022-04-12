@@ -1,3 +1,5 @@
+import os
+
 import pytest
 
 from django.urls import reverse
@@ -6,6 +8,7 @@ from gamification.models import ActivityGamificationEvent, \
                                 MediaGamificationEvent
 from oppia.models import Activity, Media
 from oppia.test import OppiaTestCase
+from oppiamobile.settings import TEST_RESOURCES
 
 
 class GamificationFormsTest(OppiaTestCase):
@@ -15,9 +18,8 @@ class GamificationFormsTest(OppiaTestCase):
                 'tests/test_quiz.json',
                 'default_gamification_events.json',
                 'tests/test_course_permissions.json']
-    file_root = './oppia/fixtures/reference_files/'
-    course_file_path = file_root + 'ncd1_test_course.zip'
-    media_course_file_path = file_root + 'ref-1.zip'
+    course_file_path = os.path.join(TEST_RESOURCES, 'ncd1_test_course.zip')
+    media_course_file_path = os.path.join(TEST_RESOURCES, 'ref-1.zip')
 
     B_STR_COURSE_XML = b'Course XML updated'
 

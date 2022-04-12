@@ -6,6 +6,8 @@ from django.urls import reverse
 from oppia.test import OppiaTestCase
 from pathlib import Path
 
+from oppiamobile.settings import TEST_RESOURCES
+
 
 class ActivityLogModelsTest(OppiaTestCase):
 
@@ -16,7 +18,8 @@ class ActivityLogModelsTest(OppiaTestCase):
                 'default_gamification_events.json',
                 'tests/test_course_permissions.json']
 
-    basic_activity_log = './oppia/fixtures/activity_logs/basic_activity.json'
+    activity_logs_folder = os.path.join(TEST_RESOURCES, 'activity_logs')
+    basic_activity_log = os.path.join(activity_logs_folder, 'basic_activity.json')
     url = reverse('activitylog:upload')
 
     def test_model_str(self):

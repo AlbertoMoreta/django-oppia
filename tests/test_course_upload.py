@@ -1,3 +1,5 @@
+import os
+
 import pytest
 
 from django.urls import reverse
@@ -8,6 +10,7 @@ from oppia.test import OppiaTestCase
 from oppia.models import Course, CoursePublishingLog, Quiz, Activity, Question
 from zipfile import BadZipfile
 
+from oppiamobile.settings import TEST_RESOURCES
 from quiz.models import QuizProps, QuestionProps
 
 
@@ -18,20 +21,19 @@ class CourseUploadTest(OppiaTestCase):
                 'tests/test_quiz.json',
                 'tests/test_permissions.json',
                 'tests/test_course_permissions.json']
-    file_root = './oppia/fixtures/reference_files/'
-    course_file_path = file_root + 'ncd1_test_course.zip'
-    media_file_path = file_root + 'sample_video.m4v'
-    empty_section_course = file_root + 'test_course_empty_section.zip'
-    no_module_xml = file_root + 'test_course_no_module_xml.zip'
-    corrupt_course_zip = file_root + 'corrupt_course.zip'
-    course_no_sub_dir = file_root + 'test_course_no_sub_dir.zip'
-    course_old_version = file_root + 'ncd1_old_course.zip'
-    course_no_activities = file_root + 'test_course_no_activities.zip'
-    course_with_custom_points = file_root + 'ref-1.zip'
-    course_with_copied_activities = file_root + 'ref-1-copy.zip'
-    course_with_custom_points_updated = file_root + 'ref-1-updated.zip'
-    course_with_quizprops = file_root + 'quizprops_course.zip'
-    course_with_updated_quizprops = file_root + 'quizprops_course_updated.zip'
+    course_file_path = os.path.join(TEST_RESOURCES, 'ncd1_test_course.zip')
+    media_file_path = os.path.join(TEST_RESOURCES, 'sample_video.m4v')
+    empty_section_course = os.path.join(TEST_RESOURCES, 'test_course_empty_section.zip')
+    no_module_xml = os.path.join(TEST_RESOURCES, 'test_course_no_module_xml.zip')
+    corrupt_course_zip = os.path.join(TEST_RESOURCES, 'corrupt_course.zip')
+    course_no_sub_dir = os.path.join(TEST_RESOURCES, 'test_course_no_sub_dir.zip')
+    course_old_version = os.path.join(TEST_RESOURCES, 'ncd1_old_course.zip')
+    course_no_activities = os.path.join(TEST_RESOURCES, 'test_course_no_activities.zip')
+    course_with_custom_points = os.path.join(TEST_RESOURCES, 'ref-1.zip')
+    course_with_copied_activities = os.path.join(TEST_RESOURCES, 'ref-1-copy.zip')
+    course_with_custom_points_updated = os.path.join(TEST_RESOURCES, 'ref-1-updated.zip')
+    course_with_quizprops = os.path.join(TEST_RESOURCES, 'quizprops_course.zip')
+    course_with_updated_quizprops = os.path.join(TEST_RESOURCES, 'quizprops_course_updated.zip')
 
     URL_UPLOAD = reverse('oppia:upload')
     STR_UPLOAD_STEP2 = 'oppia:upload_step2'

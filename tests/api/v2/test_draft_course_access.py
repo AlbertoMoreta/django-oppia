@@ -1,3 +1,6 @@
+import os
+import shutil
+
 import pytest
 
 from django.contrib.auth.models import User
@@ -5,6 +8,8 @@ from django.test import TransactionTestCase
 from tastypie.test import ResourceTestCaseMixin
 
 from oppia.models import Tracker
+from oppiamobile import settings
+from oppiamobile.settings import TEST_RESOURCES
 
 from tests.utils import get_api_key, get_api_url
 
@@ -17,6 +22,7 @@ class DraftCourseAccessTest(ResourceTestCaseMixin, TransactionTestCase):
 
     STR_DOWNLOAD = 'download/'
     STR_ZIP_EXPECTED_CONTENT_TYPE = 'application/zip'
+    TEST_COURSES = ['anc_test_course.zip', 'draft-20150611100319.zip']
 
     def setUp(self):
         super(DraftCourseAccessTest, self).setUp()
@@ -65,6 +71,15 @@ class DraftCourseAccessTest(ResourceTestCaseMixin, TransactionTestCase):
         self.tag_url = get_api_url('v2', 'tag')
         self.draft_tag_url = get_api_url('v2', 'tag', 8)
         self.live_tag_url = get_api_url('v2', 'tag', 1)
+
+        self.copy_test_courses()
+
+    # Copy test courses to upload directory
+    def copy_test_courses(self):
+        for test_course in self.TEST_COURSES:
+            src = os.path.join(TEST_RESOURCES, test_course)
+            dst = os.path.join(settings.COURSE_UPLOAD_DIR, test_course)
+            shutil.copyfile(src, dst)
 
     # check the tag listings
     def test_admin_tags(self):

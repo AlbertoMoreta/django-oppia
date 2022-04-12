@@ -1,4 +1,6 @@
 import io
+import os
+
 import qrcode
 
 from django.shortcuts import reverse
@@ -10,6 +12,7 @@ from reportlab.lib.pagesizes import A4, landscape, portrait
 from reportlab.lib.utils import ImageReader
 
 from oppia.models import CertificateTemplate
+from oppiamobile import settings
 
 from settings import constants
 from settings.models import SettingProperties
@@ -22,8 +25,8 @@ def generate_certificate_pdf(display_name,
     cert_template = CertificateTemplate.objects.get(pk=certificate_template_id)
     buffer = io.BytesIO()
 
-    img = Image.open(cert_template.image_file.path)
-    w, h = img.size
+    with Image.open(cert_template.image_file.path) as img:
+        w, h = img.size
 
     # Create the PDF object
     if w > h:

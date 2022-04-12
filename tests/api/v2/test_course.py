@@ -1,3 +1,6 @@
+import os
+import shutil
+
 import pytest
 
 from django.contrib.auth.models import User
@@ -5,6 +8,8 @@ from django.core.exceptions import MultipleObjectsReturned
 from django.test import TransactionTestCase
 from tastypie.test import ResourceTestCaseMixin
 
+from oppiamobile import settings
+from oppiamobile.settings import TEST_RESOURCES
 from tests.utils import get_api_key, \
     get_api_url, \
     update_course_visibility, \
@@ -20,6 +25,7 @@ class CourseResourceTest(ResourceTestCaseMixin, TransactionTestCase):
     STR_DOWNLOAD = 'download/'
     STR_ACTIVITY = 'activity/'
     STR_ZIP_EXPECTED_CONTENT_TYPE = 'application/zip'
+    TEST_COURSES = ['anc_test_course.zip']
 
     def setUp(self):
         super(CourseResourceTest, self).setUp()
@@ -44,6 +50,15 @@ class CourseResourceTest(ResourceTestCaseMixin, TransactionTestCase):
             'api_key': get_api_key(user=self.teacher).key
         }
         self.url = get_api_url('v2', 'course')
+
+        self.copy_test_courses()
+
+    # Copy test courses to upload directory
+    def copy_test_courses(self):
+        for test_course in self.TEST_COURSES:
+            src = os.path.join(TEST_RESOURCES, test_course)
+            dst = os.path.join(settings.COURSE_UPLOAD_DIR, test_course)
+            shutil.copyfile(src, dst)
 
     def perform_request(self, course_id, user, path=''):
         resource_url = get_api_url('v2', 'course', course_id) + path

@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from django.contrib.auth.hashers import make_password
 
@@ -6,6 +8,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 
 from oppia.test import OppiaTransactionTestCase
+from oppiamobile.settings import TEST_RESOURCES
 
 from profile.models import CustomField, UserProfileCustomField, UserProfile
 
@@ -20,14 +23,14 @@ class UserUploadActivityViewTest(OppiaTransactionTestCase):
                 'tests/test_course_permissions.json',
                 'tests/test_customfields.json']
 
-    fixture_root = './oppia/fixtures/reference_files/upload_users/'
-    file_valid = fixture_root + 'file-valid.csv'
-    file_duplicate_user = fixture_root + 'duplicate-user.csv'
-    file_invalid = fixture_root + 'file-invalid.csv'
-    file_valid_with_password = fixture_root + 'file-valid-with-password.csv'
-    custom_fields = fixture_root + 'custom_fields.csv'
-    custom_fields_updated = fixture_root + 'custom_fields_updated.csv'
-    all_fields = fixture_root + 'demo_user_allfields.csv'
+    upload_users_root = os.path.join(TEST_RESOURCES, 'upload_users')
+    file_valid = os.path.join(upload_users_root, 'file-valid.csv')
+    file_duplicate_user = os.path.join(upload_users_root, 'duplicate-user.csv')
+    file_invalid = os.path.join(upload_users_root, 'file-invalid.csv')
+    file_valid_with_password = os.path.join(upload_users_root, 'file-valid-with-password.csv')
+    custom_fields = os.path.join(upload_users_root, 'custom_fields.csv')
+    custom_fields_updated = os.path.join(upload_users_root, 'custom_fields_updated.csv')
+    all_fields = os.path.join(upload_users_root, 'demo_user_allfields.csv')
 
     template = 'profile/upload.html'
     url = reverse('profile:upload')

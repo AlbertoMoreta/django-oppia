@@ -1,9 +1,14 @@
+import os
+import shutil
+
 import pytest
 
 from django.contrib.auth.models import User
 from django.test import TransactionTestCase
 from tastypie.test import ResourceTestCaseMixin
 
+from oppiamobile import settings
+from oppiamobile.settings import TEST_RESOURCES
 from tests.utils import get_api_key, get_api_url, update_course_visibility
 from oppia.models import Tracker
 
@@ -16,6 +21,7 @@ class CourseResourceTest(ResourceTestCaseMixin, TransactionTestCase):
     STR_DOWNLOAD = 'download/'
     STR_ACTIVITY = 'activity/'
     STR_ZIP_EXPECTED_CONTENT_TYPE = 'application/zip'
+    TEST_COURSES = ['anc_test_course.zip']
 
     def setUp(self):
         super(CourseResourceTest, self).setUp()
@@ -40,6 +46,15 @@ class CourseResourceTest(ResourceTestCaseMixin, TransactionTestCase):
             'api_key': get_api_key(user=teacher).key
         }
         self.url = get_api_url('v1', 'course')
+
+        self.copy_test_courses()
+
+    # Copy test courses to upload directory
+    def copy_test_courses(self):
+        for test_course in self.TEST_COURSES:
+            src = os.path.join(TEST_RESOURCES, test_course)
+            dst = os.path.join(settings.COURSE_UPLOAD_DIR, test_course)
+            shutil.copyfile(src, dst)
 
     # Post invalid
     def test_post_invalid(self):
