@@ -6,9 +6,9 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
+from django.conf import settings
 
 from oppia.test import OppiaTransactionTestCase
-from oppiamobile.settings import TEST_RESOURCES
 
 from profile.models import CustomField, UserProfileCustomField, UserProfile
 
@@ -23,7 +23,7 @@ class UserUploadActivityViewTest(OppiaTransactionTestCase):
                 'tests/test_course_permissions.json',
                 'tests/test_customfields.json']
 
-    upload_users_root = os.path.join(TEST_RESOURCES, 'upload_users')
+    upload_users_root = os.path.join(settings.TEST_RESOURCES, 'upload_users')
     file_valid = os.path.join(upload_users_root, 'file-valid.csv')
     file_duplicate_user = os.path.join(upload_users_root, 'duplicate-user.csv')
     file_invalid = os.path.join(upload_users_root, 'file-invalid.csv')
@@ -85,7 +85,6 @@ class UserUploadActivityViewTest(OppiaTransactionTestCase):
         user_count_end = User.objects.all().count()
         self.assertEqual(user_count_start+2, user_count_end)
 
-    @pytest.mark.xfail(reason="works on local, but not on Github workflow")
     def test_view_upload_duplicate_user(self):
         self.client.force_login(user=self.admin_user)
 

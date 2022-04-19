@@ -3,10 +3,10 @@ import os
 
 from django.contrib.auth.models import User
 from django.test import TestCase
+from django.conf import settings
 
 from activitylog.models import UploadedActivityLog
 from oppia.models import Tracker
-from oppiamobile.settings import TEST_RESOURCES
 from quiz.models import QuizAttemptResponse, QuizAttempt
 from tastypie.test import ResourceTestCaseMixin
 from tests.utils import get_api_key
@@ -22,7 +22,7 @@ class UploadAPIActivityLogTest(ResourceTestCaseMixin, TestCase):
                 'default_gamification_events.json']
 
     url = '/api/activitylog/'
-    activity_logs_folder = os.path.join(TEST_RESOURCES, 'activity_logs')
+    activity_logs_folder = os.path.join(settings.TEST_RESOURCES, 'activity_logs')
     basic_activity_log = os.path.join(activity_logs_folder, 'basic_activity.json')
     activity_log_file_path = os.path.join(activity_logs_folder, 'activity_upload_test.json')
     wrong_activity_file = os.path.join(activity_logs_folder, 'wrong_format.json')

@@ -3,12 +3,11 @@ import shutil
 
 import pytest
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TransactionTestCase
 from tastypie.test import ResourceTestCaseMixin
 
-from oppiamobile import settings
-from oppiamobile.settings import TEST_RESOURCES
 from tests.utils import get_api_key, get_api_url, update_course_visibility
 from oppia.models import Tracker
 
@@ -52,7 +51,7 @@ class CourseResourceTest(ResourceTestCaseMixin, TransactionTestCase):
     # Copy test courses to upload directory
     def copy_test_courses(self):
         for test_course in self.TEST_COURSES:
-            src = os.path.join(TEST_RESOURCES, test_course)
+            src = os.path.join(settings.TEST_RESOURCES, test_course)
             dst = os.path.join(settings.COURSE_UPLOAD_DIR, test_course)
             shutil.copyfile(src, dst)
 
@@ -171,7 +170,6 @@ class CourseResourceTest(ResourceTestCaseMixin, TransactionTestCase):
             resource_url, format='json', data=self.admin_auth)
         self.assertHttpOK(resp)
 
-    @pytest.mark.xfail(reason="works on local but not on github workflows")
     def test_live_course_admin(self):
         tracker_count_start = Tracker.objects.all().count()
         resource_url = get_api_url('v1', 'course', 1) + self.STR_DOWNLOAD
@@ -183,7 +181,6 @@ class CourseResourceTest(ResourceTestCaseMixin, TransactionTestCase):
         tracker_count_end = Tracker.objects.all().count()
         self.assertEqual(tracker_count_start+1, tracker_count_end)
 
-    @pytest.mark.xfail(reason="works on local but not on github workflows")
     def test_live_course_staff(self):
         tracker_count_start = Tracker.objects.all().count()
         resource_url = get_api_url('v1', 'course', 1) + self.STR_DOWNLOAD
@@ -195,7 +192,6 @@ class CourseResourceTest(ResourceTestCaseMixin, TransactionTestCase):
         tracker_count_end = Tracker.objects.all().count()
         self.assertEqual(tracker_count_start+1, tracker_count_end)
 
-    @pytest.mark.xfail(reason="works on local but not on github workflows")
     def test_live_course_teacher(self):
         tracker_count_start = Tracker.objects.all().count()
         resource_url = get_api_url('v1', 'course', 1) + self.STR_DOWNLOAD
@@ -207,7 +203,6 @@ class CourseResourceTest(ResourceTestCaseMixin, TransactionTestCase):
         tracker_count_end = Tracker.objects.all().count()
         self.assertEqual(tracker_count_start+1, tracker_count_end)
 
-    @pytest.mark.xfail(reason="works on local but not on github workflows")
     def test_live_course_normal(self):
         tracker_count_start = Tracker.objects.all().count()
         resource_url = get_api_url('v1', 'course', 1) + self.STR_DOWNLOAD
@@ -219,7 +214,6 @@ class CourseResourceTest(ResourceTestCaseMixin, TransactionTestCase):
         tracker_count_end = Tracker.objects.all().count()
         self.assertEqual(tracker_count_start+1, tracker_count_end)
 
-    @pytest.mark.xfail(reason="works on local but not on github workflows")
     def test_draft_course_admin(self):
         tracker_count_start = Tracker.objects.all().count()
         update_course_visibility(1, True, False)
@@ -233,7 +227,6 @@ class CourseResourceTest(ResourceTestCaseMixin, TransactionTestCase):
         tracker_count_end = Tracker.objects.all().count()
         self.assertEqual(tracker_count_start+1, tracker_count_end)
 
-    @pytest.mark.xfail(reason="works on local but not on github workflows")
     def test_draft_course_staff(self):
         tracker_count_start = Tracker.objects.all().count()
         update_course_visibility(1, True, False)

@@ -2,12 +2,12 @@ import os
 
 from django.core.management import call_command
 from django.core.management.base import CommandError
+from django.conf import settings
 
 from io import StringIO
 
 from oppia.models import Tracker
 from oppia.test import OppiaTestCase
-from oppiamobile.settings import TEST_RESOURCES
 
 from quiz.models import QuizAttempt
 
@@ -22,7 +22,7 @@ class ActivityLogsFromFolderTest(OppiaTestCase):
                 'default_gamification_events.json',
                 'tests/test_course_permissions.json']
 
-    activity_logs_folder = os.path.join(TEST_RESOURCES, 'activity_logs')
+    activity_logs_folder = os.path.join(settings.TEST_RESOURCES, 'activity_logs')
 
     def test_no_folder(self):
         out = StringIO()

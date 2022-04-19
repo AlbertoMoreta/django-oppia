@@ -6,7 +6,6 @@ from django.conf import settings
 from django.urls import reverse
 
 from oppia.test import OppiaTestCase
-from oppiamobile.settings import TEST_RESOURCES
 
 
 class DownloadMediaTest(OppiaTestCase):
@@ -39,10 +38,9 @@ class DownloadMediaTest(OppiaTestCase):
             self.assertTemplateUsed(response, 'course/media/list.html')
             self.assertEqual(200, response.status_code)
 
-    @pytest.mark.xfail(reason="works on local but not on github workflows")
     def test_course_with_media(self):
         # copy sample video to correct location
-        src = os.path.join(TEST_RESOURCES, self.MEDIA_FILENAME)
+        src = os.path.join(settings.TEST_RESOURCES, self.MEDIA_FILENAME)
         dst = os.path.join(self.UPLOADED_ROOT, self.MEDIA_FILENAME)
         shutil.copyfile(src, dst)
 

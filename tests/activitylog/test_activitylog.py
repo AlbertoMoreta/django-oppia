@@ -4,9 +4,9 @@ from oppia.test import OppiaTestCase
 
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.conf import settings
 
 from oppia.models import Tracker
-from oppiamobile.settings import TEST_RESOURCES
 from profile.models import UserProfile, UserProfileCustomField, CustomField
 from quiz.models import QuizAttemptResponse, QuizAttempt
 
@@ -24,7 +24,7 @@ class UploadActivityLogTest(OppiaTestCase):
 
     url = reverse('activitylog:upload')
 
-    activity_logs_folder = os.path.join(TEST_RESOURCES, 'activity_logs')
+    activity_logs_folder = os.path.join(settings.TEST_RESOURCES, 'activity_logs')
     basic_activity_log = os.path.join(activity_logs_folder, 'basic_activity.json')
     activity_log_file_path = os.path.join(activity_logs_folder, 'activity_upload_test.json')
     wrong_activity_file = os.path.join(activity_logs_folder, 'wrong_format.json')

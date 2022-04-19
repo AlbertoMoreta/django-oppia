@@ -4,11 +4,10 @@ from zipfile import ZipFile
 
 import pytest
 
+from django.conf import settings
 from django.test import TestCase
 from tastypie.test import ResourceTestCaseMixin
 
-from oppiamobile import settings
-from oppiamobile.settings import TEST_RESOURCES
 from tests.utils import get_api_url, update_course_visibility
 
 
@@ -23,7 +22,7 @@ class CourseStructureResourceTest(ResourceTestCaseMixin, TestCase):
     def copy_test_courses(cls):
         for test_course in cls.TEST_COURSES:
             if not os.path.isfile(test_course):
-                src = os.path.join(TEST_RESOURCES, test_course)
+                src = os.path.join(settings.TEST_RESOURCES, test_course)
                 dst = os.path.join(settings.MEDIA_ROOT, 'courses', test_course)
                 os.makedirs(os.path.dirname(dst), exist_ok=True)
                 shutil.copyfile(src, dst)
@@ -43,7 +42,6 @@ class CourseStructureResourceTest(ResourceTestCaseMixin, TestCase):
         cls.extract_test_courses()
 
     # working id
-    @pytest.mark.xfail(reason="works on local, but not on Github workflow")
     def test_working_id(self):
         url = get_api_url('v2', 'coursestructure', 1)
         response = self.client.get(url)
@@ -51,7 +49,6 @@ class CourseStructureResourceTest(ResourceTestCaseMixin, TestCase):
         self.assertValidJSON(response.content)
 
     # working shortname
-    @pytest.mark.xfail(reason="works on local, but not on Github workflow")
     def test_working_shortname(self):
         url = get_api_url('v2', 'coursestructure', 'anc1-all')
         response = self.client.get(url)
