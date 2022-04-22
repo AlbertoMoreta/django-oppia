@@ -45,6 +45,7 @@ class UploadMediaForm(forms.Form):
         cleaned_data = super(UploadMediaForm, self).clean()
         media_file = cleaned_data.get("media_file")
 
+        print("Media content type: " + media_file.content_type)
         if media_file is not None \
                 and media_file.content_type  \
                 not in settings.OPPIA_MEDIA_FILE_TYPES:
