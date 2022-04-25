@@ -69,13 +69,16 @@ def upload_view(request):
         return HttpResponse(status=405)
 
     valid, error, user = api_authenticate(request)
+    print("user authenticated")
     if not valid:
         return error
 
     result = handler.upload(request, user)
+    print("File uploaded")
 
     if result['result'] == constants.UPLOAD_MEDIA_STATUS_SUCCESS:
         media = result['media']
+        print("Media uploaded: " + str(result['media']))
 
         return JsonResponse({'digest': media.md5,
                              'length': media.length,
@@ -84,5 +87,6 @@ def upload_view(request):
                              request.build_absolute_uri(media.file.url)
                              }, status=201)
     else:
+        print("errors found: " + str(result['errors']))
         response = {'messages': result['errors']}
         return JsonResponse(response, status=400)

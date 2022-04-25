@@ -91,33 +91,45 @@ class MediaAPIResourceTest(OppiaTestCase):
 
         # normal user
         with open(self.video_file_path, 'rb') as video_file:
+            upload_file = SimpleUploadedFile(video_file.name,
+                                             video_file.read(),
+                                             content_type='video/mp4')
             response = self.client.post(self.url, {'username': 'demo',
                                                    'password': 'password',
-                                                   'media_file': video_file})
+                                                   'media_file': upload_file})
         self.assertEqual(response.status_code, 201)
 
     def test_upload_teacher(self):
         # teacher
         with open(self.video_file_path, 'rb') as video_file:
+            upload_file = SimpleUploadedFile(video_file.name,
+                                             video_file.read(),
+                                             content_type='video/mp4')
             response = self.client.post(self.url, {'username': 'teacher',
                                                    'password': 'password',
-                                                   'media_file': video_file})
+                                                   'media_file': upload_file})
         self.assertEqual(response.status_code, 201)
 
     def test_upload_staff(self):
         # staff
         with open(self.video_file_path, 'rb') as video_file:
+            upload_file = SimpleUploadedFile(video_file.name,
+                                             video_file.read(),
+                                             content_type='video/mp4')
             response = self.client.post(self.url, {'username': 'staff',
                                                    'password': 'password',
-                                                   'media_file': video_file})
+                                                   'media_file': upload_file})
         self.assertEqual(response.status_code, 201)
 
     def test_upload_admin(self):
         # admin
         with open(self.video_file_path, 'rb') as video_file:
+            upload_file = SimpleUploadedFile(video_file.name,
+                                             video_file.read(),
+                                             content_type='video/mp4')
             response = self.client.post(self.url, {'username': 'admin',
                                                    'password': 'password',
-                                                   'media_file': video_file})
+                                                   'media_file': upload_file})
         self.assertEqual(response.status_code, 201)
 
     # test file type
