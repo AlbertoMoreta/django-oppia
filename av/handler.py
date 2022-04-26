@@ -1,5 +1,6 @@
 
 import hashlib
+import logging
 import math
 import os
 import subprocess
@@ -13,6 +14,8 @@ from av import constants
 from av.forms import UploadMediaForm
 from av.models import UploadedMedia
 
+
+logger = logging.getLogger(__name__)
 
 def upload(request, user):
 
@@ -48,14 +51,16 @@ def upload(request, user):
             most likely means settings.MEDIA_PROCESSOR_PROGRAM is not installed
             '''
             uploaded_media.delete()
-            messages.add_message(
-                request,
-                messages.ERROR,
-                _(u"The %s program does not seem to be \
+            msg_text = _(u"The %s program does not seem to be \
                   installed on this server, or is \
                   incorrectly configured. Please ask your \
                   Oppia system administrator to install it \
-                  for you.") % settings.MEDIA_PROCESSOR_PROGRAM, "danger")
+                  for you.") % settings.MEDIA_PROCESSOR_PROGRAM
+            messages.add_message(
+                request,
+                messages.ERROR,
+                msg_text,
+                "danger")
             return {'result': constants.UPLOAD_MEDIA_STATUS_FAILURE,
                     'form': form,
                     'errors':
